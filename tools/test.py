@@ -17,6 +17,9 @@ from mmdet.apis import multi_gpu_test, single_gpu_test
 from mmdet.datasets import (build_dataloader, build_dataset,
                             replace_ImageToTensor)
 from mmdet.models import build_detector
+from mmdet.utils import XMMDetQuantTestModule, save_model_proto, mmdet_load_checkpoint
+
+from torchvision.edgeailite import xnn
 
 
 def parse_args():
@@ -104,8 +107,8 @@ def parse_args():
     return args
 
 
-def main():
-    args = parse_args()
+def main(args=None):
+    args = args or parse_args()
 
     assert args.out or args.eval or args.format_only or args.show \
         or args.show_dir, \
@@ -118,6 +121,16 @@ def main():
 
     if args.out is not None and not args.out.endswith(('.pkl', '.pickle')):
         raise ValueError('The output file must be a pkl file.')
+
+    # just creating an instance of xnn.utils.TeeLogger() with a file
+    # is sufficient to simultaneously pipe the results to the file
+    results_file = os.path.splitext(args.out)[0] + '.log'
+    results_dir = os.path.split(results_file)[0]
+    if not os.path.exists(results_dir):
+        warnings.warn(f'folder {results_dir} does nto exist. creating it')
+        os.makedirs(results_dir, exist_ok=True)
+    #
+    logger = xnn.utils.TeeLogger(results_file, append=True)
 
     cfg = Config.fromfile(args.config)
     if args.cfg_options is not None:
@@ -181,10 +194,17 @@ def main():
     # build the model and load checkpoint
     cfg.model.train_cfg = None
     model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
+
+    if hasattr(cfg, 'quantize') and cfg.quantize:
+        input_size = (1, 3, *cfg.input_size) if isinstance(cfg.input_size, (list, tuple)) \
+            else (1, 3, cfg.input_size, cfg.input_size)
+        dummy_input = torch.zeros(*input_size)
+        model = XMMDetQuantTestModule(model, dummy_input)
+
     fp16_cfg = cfg.get('fp16', None)
     if fp16_cfg is not None:
         wrap_fp16_model(model)
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    checkpoint = mmdet_load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.fuse_conv_bn:
         model = fuse_conv_bn(model)
     # old versions did not save class info in checkpoints, this walkaround is

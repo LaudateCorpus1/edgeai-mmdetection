@@ -4,7 +4,7 @@ from .channel_mapper import ChannelMapper
 from .ct_resnet_neck import CTResNetNeck
 from .dilated_encoder import DilatedEncoder
 from .fpg import FPG
-from .fpn import FPN
+from .fpn import FPN, BiFPNLite
 from .fpn_carafe import FPN_CARAFE
 from .hrfpn import HRFPN
 from .nas_fpn import NASFPN

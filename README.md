@@ -1,183 +1,79 @@
-<div align="center">
-  <img src="resources/mmdet-logo.png" width="600"/>
+# EdgeAI-MMDetection
 
+### Notice
+- If you have not visited the landing page of at https://github.com/TexasInstruments/edgeai, please do so before attempting to use this repository. We skip most of the introduction in this repository.
+- This repository is located in Github at: https://github.com/TexasInstruments/edgeai-torchvision
 
-[![PyPI](https://img.shields.io/pypi/v/mmdet)](https://pypi.org/project/mmdet)
-[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmdetection.readthedocs.io/en/latest/)
-[![badge](https://github.com/open-mmlab/mmdetection/workflows/build/badge.svg)](https://github.com/open-mmlab/mmdetection/actions)
-[![codecov](https://codecov.io/gh/open-mmlab/mmdetection/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmdetection)
-[![license](https://img.shields.io/github/license/open-mmlab/mmdetection.svg)](https://github.com/open-mmlab/mmdetection/blob/master/LICENSE)
-[![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmdetection.svg)](https://github.com/open-mmlab/mmdetection/issues)
+<hr>
 
+This repository is an extension of the popular [mmdetection](https://github.com/open-mmlab/mmdetection) open source repository for object detection training. While mmdetection focuses on a wide variety of models, typically at high complexity, we focus on models that are optimized for speed and accuracy so that they run efficiently on embedded devices. 
 
-  <img src="https://user-images.githubusercontent.com/12907710/137271636-56ba1cd2-b110-4812-8221-b4c120320aa9.png"/>
+If the accuracy degradation with Post Training Quantization (PTQ) is higher than expected, this repository provides instructions and functionality required to do Quantization Aware Training (QAT).
 
-
-[📘Documentation](https://mmdetection.readthedocs.io/en/v2.19.0/) |
-[🛠️Installation](https://mmdetection.readthedocs.io/en/v2.19.0/get_started.html) |
-[👀Model Zoo](https://mmdetection.readthedocs.io/en/v2.19.0/model_zoo.html) |
-[🆕Update News](https://mmdetection.readthedocs.io/en/v2.19.0/changelog.html) |
-[🚀Ongoing Projects](https://github.com/open-mmlab/mmdetection/projects) |
-[🤔Reporting Issues](https://github.com/open-mmlab/mmdetection/issues/new/choose)
-
-</div>
-
-## Introduction
-
-English | [简体中文](README_zh-CN.md)
-
-MMDetection is an open source object detection toolbox based on PyTorch. It is
-a part of the [OpenMMLab](https://openmmlab.com/) project.
-
-The master branch works with **PyTorch 1.5+**.
-
-<details open>
-<summary>Major features</summary>
-
-- **Modular Design**
-
-  We decompose the detection framework into different components and one can easily construct a customized object detection framework by combining different modules.
-
-- **Support of multiple frameworks out of box**
-
-  The toolbox directly supports popular and contemporary detection frameworks, *e.g.* Faster RCNN, Mask RCNN, RetinaNet, etc.
-
-- **High efficiency**
-
-  All basic bbox and mask operations run on GPUs. The training speed is faster than or comparable to other codebases, including [Detectron2](https://github.com/facebookresearch/detectron2), [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) and [SimpleDet](https://github.com/TuSimple/simpledet).
-
-- **State of the art**
-
-  The toolbox stems from the codebase developed by the *MMDet* team, who won [COCO Detection Challenge](http://cocodataset.org/#detection-leaderboard) in 2018, and we keep pushing it forward.
-</details>
-
-
-Apart from MMDetection, we also released a library [mmcv](https://github.com/open-mmlab/mmcv) for computer vision research, which is heavily depended on by this toolbox.
-
-## License
-
-This project is released under the [Apache 2.0 license](LICENSE).
-
-## Changelog
-
-**2.19.0** was released in 29/11/2021:
-
-- Support [Label Assignment Distillation](https://arxiv.org/abs/2108.10520)
-- Support `persistent_workers` for Pytorch >= 1.7
-- Align accuracy to the updated official YOLOX
-
-Please refer to [changelog.md](docs/changelog.md) for details and release history.
-
-For compatibility changes between different versions of MMDetection, please refer to [compatibility.md](docs/compatibility.md).
-
-## Benchmark and model zoo
-
-Results and models are available in the [model zoo](docs/model_zoo.md).
-
-
-<details open>
-<summary>Supported backbones:</summary>
-
-- [x] ResNet (CVPR'2016)
-- [x] ResNeXt (CVPR'2017)
-- [x] VGG (ICLR'2015)
-- [x] MobileNetV2 (CVPR'2018)
-- [x] HRNet (CVPR'2019)
-- [x] RegNet (CVPR'2020)
-- [x] Res2Net (TPAMI'2020)
-- [x] ResNeSt (ArXiv'2020)
-- [X] Swin (CVPR'2021)
-- [x] PVT (ICCV'2021)
-- [x] PVTv2 (ArXiv'2021)
-</details>
-
-<details open>
-<summary>Supported methods:</summary>
-
-- [x] [RPN (NeurIPS'2015)](configs/rpn)
-- [x] [Fast R-CNN (ICCV'2015)](configs/fast_rcnn)
-- [x] [Faster R-CNN (NeurIPS'2015)](configs/faster_rcnn)
-- [x] [Mask R-CNN (ICCV'2017)](configs/mask_rcnn)
-- [x] [Cascade R-CNN (CVPR'2018)](configs/cascade_rcnn)
-- [x] [Cascade Mask R-CNN (CVPR'2018)](configs/cascade_rcnn)
-- [x] [SSD (ECCV'2016)](configs/ssd)
-- [x] [RetinaNet (ICCV'2017)](configs/retinanet)
-- [x] [GHM (AAAI'2019)](configs/ghm)
-- [x] [Mask Scoring R-CNN (CVPR'2019)](configs/ms_rcnn)
-- [x] [Double-Head R-CNN (CVPR'2020)](configs/double_heads)
-- [x] [Hybrid Task Cascade (CVPR'2019)](configs/htc)
-- [x] [Libra R-CNN (CVPR'2019)](configs/libra_rcnn)
-- [x] [Guided Anchoring (CVPR'2019)](configs/guided_anchoring)
-- [x] [FCOS (ICCV'2019)](configs/fcos)
-- [x] [RepPoints (ICCV'2019)](configs/reppoints)
-- [x] [Foveabox (TIP'2020)](configs/foveabox)
-- [x] [FreeAnchor (NeurIPS'2019)](configs/free_anchor)
-- [x] [NAS-FPN (CVPR'2019)](configs/nas_fpn)
-- [x] [ATSS (CVPR'2020)](configs/atss)
-- [x] [FSAF (CVPR'2019)](configs/fsaf)
-- [x] [PAFPN (CVPR'2018)](configs/pafpn)
-- [x] [Dynamic R-CNN (ECCV'2020)](configs/dynamic_rcnn)
-- [x] [PointRend (CVPR'2020)](configs/point_rend)
-- [x] [CARAFE (ICCV'2019)](configs/carafe/README.md)
-- [x] [DCNv2 (CVPR'2019)](configs/dcn/README.md)
-- [x] [Group Normalization (ECCV'2018)](configs/gn/README.md)
-- [x] [Weight Standardization (ArXiv'2019)](configs/gn+ws/README.md)
-- [x] [OHEM (CVPR'2016)](configs/faster_rcnn/faster_rcnn_r50_fpn_ohem_1x_coco.py)
-- [x] [Soft-NMS (ICCV'2017)](configs/faster_rcnn/faster_rcnn_r50_fpn_soft_nms_1x_coco.py)
-- [x] [Generalized Attention (ICCV'2019)](configs/empirical_attention/README.md)
-- [x] [GCNet (ICCVW'2019)](configs/gcnet/README.md)
-- [x] [Mixed Precision (FP16) Training (ArXiv'2017)](configs/fp16/README.md)
-- [x] [InstaBoost (ICCV'2019)](configs/instaboost/README.md)
-- [x] [GRoIE (ICPR'2020)](configs/groie/README.md)
-- [x] [DetectoRS (ArXiv'2020)](configs/detectors/README.md)
-- [x] [Generalized Focal Loss (NeurIPS'2020)](configs/gfl/README.md)
-- [x] [CornerNet (ECCV'2018)](configs/cornernet/README.md)
-- [x] [Side-Aware Boundary Localization (ECCV'2020)](configs/sabl/README.md)
-- [x] [YOLOv3 (ArXiv'2018)](configs/yolo/README.md)
-- [x] [PAA (ECCV'2020)](configs/paa/README.md)
-- [x] [YOLACT (ICCV'2019)](configs/yolact/README.md)
-- [x] [CentripetalNet (CVPR'2020)](configs/centripetalnet/README.md)
-- [x] [VFNet (ArXiv'2020)](configs/vfnet/README.md)
-- [x] [DETR (ECCV'2020)](configs/detr/README.md)
-- [x] [Deformable DETR (ICLR'2021)](configs/deformable_detr/README.md)
-- [x] [CascadeRPN (NeurIPS'2019)](configs/cascade_rpn/README.md)
-- [x] [SCNet (AAAI'2021)](configs/scnet/README.md)
-- [x] [AutoAssign (ArXiv'2020)](configs/autoassign/README.md)
-- [x] [YOLOF (CVPR'2021)](configs/yolof/README.md)
-- [x] [Seasaw Loss (CVPR'2021)](configs/seesaw_loss/README.md)
-- [x] [CenterNet (CVPR'2019)](configs/centernet/README.md)
-- [x] [YOLOX (ArXiv'2021)](configs/yolox/README.md)
-- [x] [SOLO (ECCV'2020)](configs/solo/README.md)
-- [x] [QueryInst (ICCV'2021)](configs/queryinst/README.md)
-</details>
-
-Some other methods are also supported in [projects using MMDetection](./docs/projects.md).
+<hr>
 
 ## Installation
+These installation instructions were tested using [Miniconda](https://docs.conda.io/en/latest/) Python 3.7 on a Linux Machine with Ubuntu 18.04 OS.
 
-Please refer to [get_started.md](docs/get_started.md) for installation.
+Make sure that your Python version is indeed 3.7 or higher by typing:<br>
+```
+python --version
+```
 
-## Getting Started
+Please clone and install [**EdgeAI-Torchvision**](https://github.com/TexasInstruments/edgeai-torchvision) as this repository uses several components from there - especially to define low complexity models and to do Quantization Aware Training (QAT) or Calibration.
 
-Please see [get_started.md](docs/get_started.md) for the basic usage of MMDetection.
-We provide [colab tutorial](demo/MMDet_Tutorial.ipynb), and full guidance for quick run [with existing dataset](docs/1_exist_data_model.md) and [with new dataset](docs/2_new_data_model.md) for beginners.
-There are also tutorials for [finetuning models](docs/tutorials/finetune.md), [adding new dataset](docs/tutorials/customize_dataset.md), [designing data pipeline](docs/tutorials/data_pipeline.md), [customizing models](docs/tutorials/customize_models.md), [customizing runtime settings](docs/tutorials/customize_runtime.md) and [useful tools](docs/useful_tools.md).
+After that, install this repository by running [./setup.sh](./setup.sh)
 
-Please refer to [FAQ](docs/faq.md) for frequently asked questions.
+After installation, a python package called "mmdet" will be listed if you do *pip list*
 
-## Contributing
 
-We appreciate all contributions to improve MMDetection. Ongoing projects can be found in out [GitHub Projects](https://github.com/open-mmlab/mmdetection/projects). Welcome community users to participate in these projects. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
+## Get Started
+Please see [Usage](./docs/det_usage.md) for training and testing with this repository.
+
+
+## Object Detection Model Zoo
+Complexity and Accuracy report of several trained models is available at the [Detection Model Zoo](./docs/det_modelzoo.md) 
+
+
+## Quantization
+This tutorial explains more about quantization and how to do [Quantization Aware Training (QAT)](./docs/det_quantization.md) of detection models.
+
+
+## ONNX & Prototxt Export
+**Export of ONNX model (.onnx) and additional meta information (.prototxt)** is supported. The .prototxt contains meta information specified in **[TIDL](https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/latest/exports/docs/psdk_rtos_auto/docs/user_guide/sdk_components.html#ti-deep-learning-library-tidl)** for object detectors. 
+
+The export of meta information is now supported for **SSD** and **RetinaNet** detectors.
+
+For more information please see [Usage](./docs/det_usage.md)
+
+
+## Advanced documentation
+Kindly take time to read through the documentation of the original [mmdetection](README_mmdet.md) before attempting to use extensions added this repository.
+
+The setup script [setup.sh](setup.sh) in this repository has the commonly used settings. If your CUDA version is different or your Python version si different or if you have some missing packages in your system, this script can fail. In those scenarios, please refer to [installation instructions for mmdetection](./docs/get_started.md) for detailed installation instructions. 
+
+Also see [documentation of MMDetection](./docs/index.rst) for the basic usage of mmdetection. 
+
 
 ## Acknowledgement
 
-MMDetection is an open source project that is contributed by researchers and engineers from various colleges and companies. We appreciate all the contributors who implement their methods or add new features, as well as users who give valuable feedbacks.
-We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new detectors.
+This is an open source project that is contributed by researchers and engineers from various colleges and companies. We appreciate all the contributors who implement their methods or add new features, as well as users who give valuable feedbacks.
+
+We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to train existing detectors and also to develop their own new detectors.
+
 
 ## Citation
 
-If you use this toolbox or benchmark in your research, please cite this project.
+This package/toolbox is an extension of mmdetection (https://github.com/open-mmlab/mmdetection). If you use this repository or benchmark in your research or work, please cite the following:
 
+```
+@article{EdgeAI-MMDetection,
+  title   = {{EdgeAI-MMDetection}: An Extension To Open MMLab Detection Toolbox and Benchmark},
+  author  = {Texas Instruments EdgeAI Development Team, edgeai-devkit@list.ti.com},
+  journal = {https://github.com/TexasInstruments/edgeai},
+  year={2021}
+}
+```
 ```
 @article{mmdetection,
   title   = {{MMDetection}: Open MMLab Detection Toolbox and Benchmark},
@@ -192,19 +88,11 @@ If you use this toolbox or benchmark in your research, please cite this project.
 }
 ```
 
-## Projects in OpenMMLab
 
-- [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab foundational library for computer vision.
-- [MIM](https://github.com/open-mmlab/mim): MIM Installs OpenMMLab Packages.
-- [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab image classification toolbox and benchmark.
-- [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab detection toolbox and benchmark.
-- [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab's next-generation platform for general 3D object detection.
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab semantic segmentation toolbox and benchmark.
-- [MMAction2](https://github.com/open-mmlab/mmaction2): OpenMMLab's next-generation action understanding toolbox and benchmark.
-- [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab video perception toolbox and benchmark.
-- [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab pose estimation toolbox and benchmark.
-- [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab image and video editing toolbox.
-- [MMOCR](https://github.com/open-mmlab/mmocr): A Comprehensive Toolbox for Text Detection, Recognition and Understanding.
-- [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab image and video generative models toolbox.
-- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
-- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab FewShot Learning Toolbox and Benchmark.
+## License
+
+Please see [LICENSE](./LICENSE) file.
+
+
+## References
+[1] MMDetection: Open MMLab Detection Toolbox and Benchmark, https://arxiv.org/abs/1906.07155, Kai Chen, Jiaqi Wang, Jiangmiao Pang, Yuhang Cao, Yu Xiong, Xiaoxiao Li, Shuyang Sun, Wansen Feng, Ziwei Liu, Jiarui Xu, Zheng Zhang, Dazhi Cheng, Chenchen Zhu, Tianheng Cheng, Qijie Zhao, Buyu Li, Xin Lu, Rui Zhu, Yue Wu, Jifeng Dai, Jingdong Wang, Jianping Shi, Wanli Ouyang, Chen Change Loy, Dahua Lin

@@ -172,11 +172,9 @@ def main(args=None):
         model = xnn.model_surgery.convert_to_lite_model(model, **convert_to_lite_model_args)
 
     if hasattr(cfg, 'print_model_complexity') and cfg.print_model_complexity:
-        input_res = (3, *cfg.input_size) if isinstance(cfg.input_size, (list, tuple)) else \
-            (3, cfg.input_size, cfg.input_size)
         logger_stream = LoggerStream(logger)
         with redirect_stdout(logger_stream):
-            get_model_complexity_info(model, input_res)
+            get_model_complexity_info(model, cfg.input_size)
 
     if hasattr(cfg, 'quantize') and cfg.quantize:
         input_res = (3, *cfg.input_size) if isinstance(cfg.input_size, (list, tuple)) else \

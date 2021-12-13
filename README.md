@@ -6,7 +6,7 @@
 
 <hr>
 
-This repository is an extension of the popular [mmdetection](https://github.com/open-mmlab/mmdetection) open source repository for object detection training. While mmdetection focuses on a wide variety of models, typically at high complexity, we focus on models that are optimized for speed and accuracy so that they run efficiently on embedded devices. 
+This repository is an extension of the popular [mmdetection](https://github.com/open-mmlab/mmdetection) open source repository for object detection training. While mmdetection focuses on a wide variety of models, typically at high complexity, we focus on models that are optimized for speed and accuracy so that they run efficiently on embedded devices. For this purpose, we have added a set of embedded friendly model configurations and scripts - please see the [Usage](./docs/det_usage.md) for more information.
 
 If the accuracy degradation with Post Training Quantization (PTQ) is higher than expected, this repository provides instructions and functionality required to do Quantization Aware Training (QAT).
 
@@ -26,6 +26,12 @@ After that, install this repository by running [./setup.sh](./setup.sh)
 
 After installation, a python package called "mmdet" will be listed if you do *pip list*
 
+In order to use a local folder as a repository, your PYTHONPATH must start with a : or a .: Please add the following to your .bashrc startup file for bash (assuming you are using bash shell). 
+```
+export PYTHONPATH=:$PYTHONPATH
+```
+Make sure to close your current terminal or start a new one for the change in .bashrc to take effect or one can do *source ~/.bashrc* after the update. 
+
 
 ## Get Started
 Please see [Usage](./docs/det_usage.md) for training and testing with this repository.
@@ -40,7 +46,7 @@ This tutorial explains more about quantization and how to do [Quantization Aware
 
 
 ## ONNX & Prototxt Export
-**Export of ONNX model (.onnx) and additional meta information (.prototxt)** is supported. The .prototxt contains meta information specified in **[TIDL](https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/latest/exports/docs/psdk_rtos_auto/docs/user_guide/sdk_components.html#ti-deep-learning-library-tidl)** for object detectors. 
+**Export of ONNX model (.onnx) and additional meta information (.prototxt)** is supported. The .prototxt contains meta information specified by **TIDL** for object detectors. 
 
 The export of meta information is now supported for **SSD** and **RetinaNet** detectors.
 
@@ -50,9 +56,9 @@ For more information please see [Usage](./docs/det_usage.md)
 ## Advanced documentation
 Kindly take time to read through the documentation of the original [mmdetection](README_mmdet.md) before attempting to use extensions added this repository.
 
-The setup script [setup.sh](setup.sh) in this repository has the commonly used settings. If your CUDA version is different or your Python version si different or if you have some missing packages in your system, this script can fail. In those scenarios, please refer to [installation instructions for mmdetection](./docs/get_started.md) for detailed installation instructions. 
+The setup script [setup.sh](setup.sh) in this repository has the commonly used settings. If your CUDA version is different or your Python version is different or if you have some missing packages in your system, this script can fail. In those scenarios, please refer to [installation instructions for original mmdetection](./docs/get_started.md) for detailed installation instructions. 
 
-Also see [documentation of MMDetection](./docs/index.rst) for the basic usage of mmdetection. 
+Also see [documentation of MMDetection](./docs/index.rst) for the basic usage of original mmdetection. 
 
 
 ## Acknowledgement

@@ -68,6 +68,11 @@ This is an open source project that is contributed by researchers and engineers 
 We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to train existing detectors and also to develop their own new detectors.
 
 
+## License
+
+Please see [LICENSE](./LICENSE) file of this repository.
+
+
 ## Citation
 
 This package/toolbox is an extension of mmdetection (https://github.com/open-mmlab/mmdetection). If you use this repository or benchmark in your research or work, please cite the following:
@@ -93,11 +98,6 @@ This package/toolbox is an extension of mmdetection (https://github.com/open-mml
   year={2019}
 }
 ```
-
-
-## License
-
-Please see [LICENSE](./LICENSE) file.
 
 
 ## References
